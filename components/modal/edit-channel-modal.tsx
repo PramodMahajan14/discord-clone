@@ -28,9 +28,9 @@ import {
 import qs from "query-string";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import axios, { formToJSON } from "axios";
+import axios from "axios";
 
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/use-modal-store";
 import { ChannelType } from "@prisma/client";
 import { useEffect } from "react";
@@ -51,45 +51,42 @@ interface formstrure {
   name: string;
   type: ChannelType;
 }
-export const CreateChannelsModal = () => {
+export const EditChannelsModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
-  const params = useParams();
-  const { channelType } = data;
-  const isModalOpen = isOpen && type === "createChannels";
+
+  const { channel, server } = data;
+  const isModalOpen = isOpen && type === "editChannel";
 
   const form = useForm<formstrure>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: channelType || ChannelType.TEXT,
+      type: channel?.type || ChannelType.TEXT,
     },
   });
 
   useEffect(() => {
-    if (channelType) {
-      form.setValue("type", channelType);
-    } else {
-      form.setValue("type", ChannelType.TEXT);
+    if (channel) {
+      form.setValue("name", channel.name);
+      form.setValue("type", channel.type);
     }
-  }, [channelType, form]);
+  }, [form, channel]);
 
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const url = qs.stringifyUrl({
-        url: `/api/channels`,
+        url: `/api/channels/${channel?.id}`,
         query: {
-          serverId: params?.serverId,
+          serverId: server?.id,
         },
       });
-      const response = await axios.post(url, values);
-      console.log(response);
+      const response = await axios.patch(url, values);
 
-      form.reset();
-      router.refresh();
       onClose();
+      router.refresh();
     } catch (err) {
       console.log(err);
     }
@@ -105,7 +102,7 @@ export const CreateChannelsModal = () => {
       <DialogContent className="bg-white text-zinc-800 p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Create Channel
+            Edit Channel
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -170,7 +167,7 @@ export const CreateChannelsModal = () => {
 
             <DialogFooter className="bg-gray-100 px-6 py-4 flex justify-center">
               <Button variant="primary" disabled={isLoading}>
-                Create
+                Save
               </Button>
             </DialogFooter>
           </form>
