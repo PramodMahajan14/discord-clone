@@ -8,12 +8,13 @@ export async function PATCH(
   { params }: { params: { serverid: string } }
 ) {
   try {
+    const { serverid } = await params;
     const profile = await currentProfile();
 
     if (!profile) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
-    if (!params.serverid) {
+    if (!serverid) {
       return new NextResponse("Server Id Missing", { status: 500 });
     }
 

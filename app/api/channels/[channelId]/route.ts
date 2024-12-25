@@ -58,6 +58,7 @@ export async function PATCH(
   { params }: { params: { channelId: string } }
 ) {
   try {
+    const { channelId } = await params;
     const profile = await currentProfile();
     const { name, type } = await req.json();
     const { searchParams } = new URL(req.url);
@@ -69,7 +70,7 @@ export async function PATCH(
     if (!serverId) {
       return new NextResponse("Server ID Missing", { status: 401 });
     }
-    if (!params.channelId) {
+    if (!channelId) {
       return new NextResponse("Channel ID Missing", { status: 401 });
     }
     if (name === "general") {
@@ -92,7 +93,7 @@ export async function PATCH(
         channels: {
           update: {
             where: {
-              id: params.channelId,
+              id: channelId,
               NOT: {
                 name: "general",
               },
