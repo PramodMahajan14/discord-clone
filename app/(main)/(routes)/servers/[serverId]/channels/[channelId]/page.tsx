@@ -1,4 +1,5 @@
 import { ChatHeader } from "@/components/chat/chat-header";
+import { ChatInput } from "@/components/chat/chat-input";
 import { db } from "@/lib/db";
 
 import { auth, currentUser } from "@clerk/nextjs/server";
@@ -41,11 +42,24 @@ const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
     <>
       <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
         {channel && (
-          <ChatHeader
-            name={channel.name}
-            serverId={channel.serverId}
-            type="channel"
-          />
+          <>
+            <ChatHeader
+              name={channel.name}
+              serverId={channel.serverId}
+              type="channel"
+            />
+
+            <div className="flex-1">Future Message</div>
+            <ChatInput
+              type="channel"
+              apiurl="/api/socket/messages"
+              name={channel.name}
+              query={{
+                channelId: channel?.id,
+                serverId: channel?.serverId,
+              }}
+            />
+          </>
         )}
         {!channel && <p>Loading channel data...</p>}
       </div>

@@ -1,5 +1,6 @@
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
+import { MemberRole } from "@prisma/client";
 import { NextResponse } from "next/server";
 
 export async function DELETE(
@@ -7,7 +8,6 @@ export async function DELETE(
   { params }: { params: { memberId: string } }
 ) {
   try {
-    const { memberId } = await params;
     const profile = await currentProfile();
     const { searchParams } = new URL(req.url);
     const serverId = searchParams.get("serverId");
@@ -17,7 +17,7 @@ export async function DELETE(
     if (!serverId) {
       return new NextResponse("Server ID missing", { status: 400 });
     }
-    if (!memberId) {
+    if (!params.memberId) {
       return new NextResponse("Member ID missing", { status: 400 });
     }
 
@@ -29,7 +29,7 @@ export async function DELETE(
       data: {
         members: {
           deleteMany: {
-            id: memberId,
+            id: params.memberId,
             profileId: {
               not: profile.id,
             },
@@ -60,11 +60,12 @@ export async function PATCH(
   { params }: { params: { memberId: string } }
 ) {
   try {
-    const { memberId } = await params;
     const profile = await currentProfile();
     const { searchParams } = new URL(req.url);
     const { role } = await req.json();
+
     const serverId = searchParams.get("serverId");
+
     if (!profile) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -72,7 +73,7 @@ export async function PATCH(
       return new NextResponse("Server ID missing", { status: 400 });
     }
 
-    if (!memberId) {
+    if (!params.memberId) {
       return new NextResponse("Member ID missing", { status: 400 });
     }
 
@@ -85,7 +86,7 @@ export async function PATCH(
         members: {
           update: {
             where: {
-              id: memberId,
+              id: params.memberId,
               profileId: {
                 not: profile.id,
               },
@@ -109,7 +110,7 @@ export async function PATCH(
     });
     return NextResponse.json(server);
   } catch (error) {
-    console.log(error);
+    console.log("MEMEBER_ID_PATCH : ", error);
     return new NextResponse("Internal_Error", { status: 500 });
   }
 }
