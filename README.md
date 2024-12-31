@@ -32,7 +32,7 @@ A full-stack communication platform inspired by Discord, built using modern web 
 
    ```bash
    git clone https://github.com/PramodMahajan14/discord-clone
-   cd your-repo-name
+   cd discord-clone
    ```
 
 2. Install dependencies:
