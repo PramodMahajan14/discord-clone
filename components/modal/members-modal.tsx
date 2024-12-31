@@ -59,6 +59,7 @@ export const MembersModal = () => {
         url: `/api/members/${memberId}`,
         query: {
           serverId: server?.id,
+          memberId,
         },
       });
 
@@ -117,8 +118,8 @@ export const MembersModal = () => {
                   {member?.profile?.email}
                 </p>
               </div>
-              {server?.profileId !== member?.profileId &&
-                loadingId !== member?.id && (
+              {server.profileId !== member.profileId &&
+                loadingId !== member.id && (
                   <div className="ml-auto">
                     <DropdownMenu>
                       <DropdownMenuTrigger>

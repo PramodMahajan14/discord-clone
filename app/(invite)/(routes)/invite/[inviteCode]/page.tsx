@@ -1,5 +1,6 @@
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 interface InviteCodePageProps {
@@ -9,10 +10,11 @@ interface InviteCodePageProps {
 }
 
 const InviteCodePage = async ({ params }: InviteCodePageProps) => {
+  const { redirectToSignIn } = await auth();
   const profile = await currentProfile();
 
   if (!profile) {
-    return redirect("/sign-in");
+    return redirectToSignIn();
   }
 
   if (!params.inviteCode) {
@@ -31,6 +33,7 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
   });
 
   if (existingServer) {
+    console.log("Server s Exist :");
     return redirect("/servers/" + existingServer?.id);
   }
 
@@ -46,8 +49,10 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
   });
 
   if (server) {
-    return redirect(`/server/${server.id}`);
+    console.log("Server s New :");
+    return redirect(`/servers/${server.id}`);
   }
+  console.log("Null :");
   return null;
 };
 export default InviteCodePage;

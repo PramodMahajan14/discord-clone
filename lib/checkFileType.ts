@@ -1,26 +1,15 @@
 export async function checkFileType(url: string): Promise<any> {
   try {
     const response = await fetch(url, { method: "HEAD" });
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch file: ${response.status} ${response.statusText}`
-      );
+    const contentType = response.headers.get("Content-Type");
+    if (contentType?.includes("image")) {
+      return "image";
+    } else if (contentType === "application/pdf") {
+      return "pdf";
     }
-
-    const contentType = response.headers.get("content-type");
-
-    if (!contentType) {
-      throw new Error("No content-type header found.");
-    }
-
-    if (contentType.includes("image")) {
-      return true;
-    } else if (contentType.includes("pdf")) {
-      return false;
-    }
+    return null;
   } catch (error) {
     console.error("Error fetching file type:", error);
-    return false;
+    return null;
   }
 }

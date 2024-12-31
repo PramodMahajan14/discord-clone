@@ -11,6 +11,7 @@ export async function DELETE(
     const profile = await currentProfile();
     const { searchParams } = new URL(req.url);
     const serverId = searchParams.get("serverId");
+
     if (!profile) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
@@ -60,6 +61,8 @@ export async function PATCH(
   { params }: { params: { memberId: string } }
 ) {
   try {
+    const { memberId } = params;
+
     const profile = await currentProfile();
     const { searchParams } = new URL(req.url);
     const { role } = await req.json();
@@ -73,7 +76,7 @@ export async function PATCH(
       return new NextResponse("Server ID missing", { status: 400 });
     }
 
-    if (!params.memberId) {
+    if (!memberId) {
       return new NextResponse("Member ID missing", { status: 400 });
     }
 
@@ -86,7 +89,7 @@ export async function PATCH(
         members: {
           update: {
             where: {
-              id: params.memberId,
+              id: memberId,
               profileId: {
                 not: profile.id,
               },
@@ -108,6 +111,7 @@ export async function PATCH(
         },
       },
     });
+    console.log("Steop-3");
     return NextResponse.json(server);
   } catch (error) {
     console.log("MEMEBER_ID_PATCH : ", error);

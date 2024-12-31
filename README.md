@@ -1,34 +1,117 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Communication Platform App
 
-## Getting Started
+A full-stack communication platform inspired by Discord, built using modern web technologies. The application supports real-time text, audio, and video communication, server and channel management, member invitations, and more.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+- **Real-time Communication**: Supports text, audio, and video chat.
+- **Server and Channel Management**: Create and manage servers and channels.
+- **Member Invitations**: Invite members to servers and channels.
+- **Real-time Updates**: Leverages WebSockets for real-time messaging and updates.
+- **Authentication**: Secure user authentication using Clerk.
+- **Responsive Design**: A user-friendly interface designed with Tailwind CSS and shadcn.
+
+## Tech Stack
+
+- **Frontend**: Next.js, React, TypeScript
+- **Backend**: Node.js, Prisma ORM, MySQL
+- **Real-Time Communication**: WebSocket.io, LiveKit
+- **Styling**: Tailwind CSS, shadcn
+- **Authentication**: Clerk
+
+## Installation
+
+### Prerequisites
+
+- Node.js (v16+)
+- MySQL
+
+### Steps
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/PramodMahajan14/discord-clone
+   cd your-repo-name
+   ```
+
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Configure the environment variables:
+
+   Create a `.env` file in the root directory and add the following:
+
+   ```env
+   DATABASE_URL="mysql://user:password@localhost:3306/your_database"
+   NEXT_PUBLIC_CLERK_FRONTEND_API="your-clerk-frontend-api"
+   CLERK_API_KEY="your-clerk-api-key"
+   LIVEKIT_PUBLIC_URL="your-livekit-server-url"
+   NEXT_PUBLIC_LIVEKIT_API_KEY="your-livekit-api-key"
+   NEXT_PUBLIC_LIVEKIT_API_SECRET="your-livekit-api-secret"
+   ```
+
+4. Set up the database:
+
+   ```bash
+   npx prisma migrate dev
+   ```
+
+5. Run the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+6. Open the app in your browser:
+
+   ```
+   http://localhost:3000
+   ```
+
+## Usage
+
+- **Login/Register**: Users can register and log in securely.
+- **Create Servers and Channels**: Create and manage servers and channels to organize communication.
+- **Invite Members**: Send invitations to other users to join servers.
+- **Real-Time Chat**: Enjoy real-time messaging, audio, and video calls.
+
+## Project Structure
+
+```plaintext
+src/
+├── app/    # Reusable UI components
+├── hooks/         # Custom React hooks
+├── lib/           # Utility libraries and helper functions
+├── pages/         # Next.js pages
+├── prisma/        # Prisma schema and migrations
+├── public/        # Static assets
+├── components/ui/        # Global and component-specific styles
+└── utils/         # Utility functions
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `npm run dev`: Start the development server.
+- `npm run build`: Build the application for production.
+- `npm run start`: Start the production server.
+- `npx prisma studio`: Launch Prisma Studio for database management.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Future Enhancements
 
-## Learn More
+- Implement role-based access control.
+- Add notification support.
+- Integrate third-party services for extended functionalities.
+- Optimize performance for larger user bases.
 
-To learn more about Next.js, take a look at the following resources:
+## Acknowledgments
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Clerk](https://clerk.dev/) for authentication.
+- [LiveKit](https://livekit.io/) for real-time audio and video communication.
+- [Prisma](https://prisma.io/) for database ORM.
+- [Tailwind CSS](https://tailwindcss.com/) for styling.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---

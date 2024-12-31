@@ -1,5 +1,7 @@
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
+import { auth, currentUser } from "@clerk/nextjs/server";
+
 import { NextResponse } from "next/server";
 import { v4 as uuidv4 } from "uuid";
 
@@ -8,11 +10,12 @@ export async function PATCH(
   { params }: { params: { serverid: string } }
 ) {
   try {
+    const { redirectToSignIn } = await auth();
     const { serverid } = await params;
     const profile = await currentProfile();
 
     if (!profile) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      return redirectToSignIn();
     }
     if (!serverid) {
       return new NextResponse("Server Id Missing", { status: 500 });
