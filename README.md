@@ -114,4 +114,4 @@ src/
 - [Prisma](https://prisma.io/) for database ORM.
 - [Tailwind CSS](https://tailwindcss.com/) for styling.
 
----
+--
